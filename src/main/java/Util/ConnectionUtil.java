@@ -9,12 +9,14 @@ import java.sql.SQLException;
  * We will be utilizing an in-memory called h2database for the sql demos.
  */
 public class ConnectionUtil {
-    //TODO: figure
-    //url will represent our connection string. Since this is an in-memory db, we will represent a file location to store the data
+    // 'url' represents the connection string. Here, we are using an this is an in-memory H2 database
     private static String url = "jdbc:h2:./h2/db";
+    // 'username' represents a valid login name for the database. 'sa' is a default value for H2 databases
     private static String username = "sa";
+    // 'password' represents the associated password for the database. 'sa' is a default value for H2 databases
     private static String password = "sa";
-
+    
+    // The 'connection' object represents the actual connection made to the database. We make it static for easier reference
     private static Connection connection = null;
 
     /**
