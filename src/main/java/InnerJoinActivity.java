@@ -80,8 +80,8 @@ public class InnerJoinActivity {
          * Ms. Lovelace teaches two classes, but which classes she teaches aren't known from the data in the student
          * table. This means that you will need a way to combine the data from the two tables (inner join).
          *
-         * You will need to simultaneously filter those results WHERE class.teacher_name = student.student_name.
-         * For instance,
+         * NOTE: You will need to simultaneously filter those results from the JOIN with a WHERE clause for the
+         * Teacher name. For instance:
          * SELECT * FROM table_left INNER JOIN table_right
          * ON table_left.column1 = table_right.column3
          * WHERE table_left.column1 = value;
