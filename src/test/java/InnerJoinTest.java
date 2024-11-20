@@ -1,28 +1,47 @@
+import Model.Entity;
 import Util.ConnectionUtil;
-import kotlin.Pair;
+import Util.FileUtil;
 import org.junit.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class InnerJoinTest {
-    private final InnerJoinActivity innerJoinActivity = new InnerJoinActivity();
     private static Connection conn;
 
+    public Set<Entity> sql(){
+            String sql = FileUtil.parseSQLFile("src/main/lab1.sql");
+            Set<Entity> results = new HashSet<>();
+            try {
+                Connection connection = ConnectionUtil.getConnection();
+                Statement s = connection.createStatement();
+                ResultSet rs =s.executeQuery(sql);
+
+                while(rs.next()) {
+                    Entity e = new Entity();
+                    e.setStudent(rs.getString("student_name"));
+                    e.setId(rs.getInt("id"));
+                    results.add(e);
+                }
+            } catch (SQLException e) {
+                Assert.fail(e.getMessage());
+            }
+
+            return results;
+    }
     @Test
     public void testActivityInnerJoin1() {
-        Set<Pair<Integer, String>> expected = new HashSet<>();
-        expected.add(new Pair<Integer, String>(2, "Stephen Colbert"));
-        expected.add(new Pair<Integer, String>(3, "Samantha Bee"));
-        expected.add(new Pair<Integer, String>(5, "Robert Riggle"));
+        Entity e1 = new Entity(2, "Stephen Colbert");
+        Entity e2 = new Entity(3, "Samantha Bee");
+        Entity e3 = new Entity(5, "Robert Riggle");
+        Set<Entity> results = sql();
+        Assert.assertTrue("There should only be 3 items in the result set. ",
+                results.size() == 3);
+        Assert.assertTrue("This student should be in the result set: "+e1, results.contains(e1));
+        Assert.assertTrue("This student should be in the result set: "+e2, results.contains(e2));
+        Assert.assertTrue("This student should be in the result set: "+e3, results.contains(e3));
 
-
-        Set<Pair<Integer, String>> result = innerJoinActivity.problem1();
-
-        Assert.assertEquals(expected, result);
 
     }
 
